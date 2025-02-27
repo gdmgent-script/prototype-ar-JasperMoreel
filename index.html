@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Red 't beest</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+</head>
+
+<body>
+    <a-scene
+        mindar-image="imageTargetSrc: targets.mind;"
+        color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+        device-orientation-permission-ui="enabled: false">
+        <a-assets>
+            <a-asset-item id="pandaModel"
+                src="./scenes/panda/scene.gltf">
+            </a-asset-item>
+            <a-asset-item id="beerModel"
+            src="./scenes/beer/scene.gltf">
+            </a-asset-item>
+            <a-asset-item id="coyoteModel"
+            src="./scenes/coyote/scene.gltf">
+            </a-asset-item>
+            <a-asset-item id="bonoboModel"
+            src="./scenes/bonobo/scene.gltf">
+            </a-asset-item>
+            <a-asset-item id="neushoornModel"
+            src="./scenes/neushoorn/scene.gltf">
+            </a-asset-item>
+            <a-asset-item id="pantherModel"
+            src="./scenes/panther/scene.gltf">
+            </a-asset-item>
+            <a-asset-item id="pinguinModel"
+                src="./scenes/pinguin/scene.gltf">
+            </a-asset-item>
+            <a-asset-item id="schildpadModel"
+            src="./scenes/schildpad/scene.gltf">
+            </a-asset-item>
+            <a-asset-item id="vulkaanModel"
+            src="./scenes/vulkaan/scene.gltf">
+            </a-asset-item>
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <a-entity mindar-image-target="targetIndex: 0">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#pantherModel"
+                animation-mixer>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 1">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.01 0.01 0.01" src="#pinguinModel"
+                animation-mixer>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 2">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#pandaModel"
+                animation-mixer>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 3">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.005 0.005 0.005" src="#beerModel"
+                animation-mixer>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 4">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.002 0.002 0.002" src="#vulkaanModel"
+                animation-mixer>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 5">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="2 2 2" src="#schildpadModel"
+                animation-mixer>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 6">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#coyoteModel"
+                animation-mixer>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 7">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#neushoornModel"
+                animation-mixer>
+        </a-entity>
+        <a-entity mindar-image-target="targetIndex: 8">
+            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#bonoboModel"
+                animation-mixer>
+        </a-entity>
+    </a-scene>
+</body>
+
+</html>
