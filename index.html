@@ -1,87 +1,171 @@
-<html>
-
+<html lang="nl">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Red 't Beest</title>
-    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Spel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20vh;
+        }
+        .card {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            width: 300px;
+            margin: auto;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .correct {
+            background-color: #28a745 !important;
+        }
+        .wrong {
+            background-color: #dc3545 !important;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
-
 <body>
-    <a-scene
-        mindar-image="imageTargetSrc: targets.mind;"
-        color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false">
-        <a-assets>
-            <a-asset-item id="pandaModel"
-                src="./scenes/panda/scene.gltf">
-            </a-asset-item>
-            <a-asset-item id="beerModel"
-            src="./scenes/beer/scene.gltf">
-            </a-asset-item>
-            <a-asset-item id="coyoteModel"
-            src="./scenes/coyote/scene.gltf">
-            </a-asset-item>
-            <a-asset-item id="bonoboModel"
-            src="./scenes/bonobo/scene.gltf">
-            </a-asset-item>
-            <a-asset-item id="neushoornModel"
-            src="./scenes/neushoorn/scene.gltf">
-            </a-asset-item>
-            <a-asset-item id="pantherModel"
-            src="./scenes/panther/scene.gltf">
-            </a-asset-item>
-            <a-asset-item id="pinguinModel"
-                src="./scenes/pinguin/scene.gltf">
-            </a-asset-item>
-            <a-asset-item id="schildpadModel"
-            src="./scenes/schildpad/scene.gltf">
-            </a-asset-item>
-            <a-asset-item id="vulkaanModel"
-            src="./scenes/vulkaan/scene.gltf">
-            </a-asset-item>
-        </a-assets>
 
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <div class="card">
+        <p id="question">Klik op "Start Quiz" om te beginnen!</p>
+        <div id="answers" class="hidden">
+            <button onclick="checkAnswer(0)"></button>
+            <button onclick="checkAnswer(1)"></button>
+            <button onclick="checkAnswer(2)"></button>
+            <button onclick="checkAnswer(3)"></button>
+        </div>
+        <p id="feedback" class="hidden"></p>
+    </div>
+    <button id="next-btn" class="hidden" onclick="nextQuestion()">Volgende Vraag</button>
+    <button id="start-btn" onclick="nextQuestion()">Start Quiz</button>
 
-        <a-entity mindar-image-target="targetIndex: 0">
-            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#pantherModel"
-                animation-mixer>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 1">
-            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.01 0.01 0.01" src="#pinguinModel"
-                animation-mixer>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 2">
-            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#pandaModel"
-                animation-mixer>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 3">
-            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.005 0.005 0.005" src="#beerModel"
-                animation-mixer>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 4">
-            <a-gltf-model rotation="0 180 0 " position="0 -0.25 0" scale="0.002 0.002 0.002" src="#vulkaanModel"
-                animation-mixer>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 5">
-            <a-gltf-model rotation="0 180 0 " position="0 -0.25 0" scale="2 2 2" src="#schildpadModel"
-                animation-mixer>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 6">
-            <a-gltf-model rotation="0 270 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#coyoteModel"
-                animation-mixer>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 7">
-            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#neushoornModel"
-                animation-mixer>
-        </a-entity>
-        <a-entity mindar-image-target="targetIndex: 8">
-            <a-gltf-model rotation="0 0 0 " position="0 -0.25 0" scale="0.5 0.5 0.5" src="#bonoboModel"
-                animation-mixer>
-        </a-entity>
-    </a-scene>
+    <script>
+        const quiz = [
+            { 
+                question: "Wat is de grootste bedreiging van panda's?",
+                answers: ["Stroperij", "Ontbossing en verlies van bamboebos", "Klimaatverandering", "Roofdieren"],
+                correct: 1,
+                explanation: "Wist je dat? Ontbossing heeft ervoor gezorgd dat 90% van het oorspronkelijke leefgebied van reuzenpanda's is verdwenen. Doordat bamboebossen gekapt worden voor landbouw en stedenbouw, moeten panda's langere afstanden afleggen om voedsel te vinden, wat hun overleving moeilijker maakt."
+            },
+            { 
+                question: "Hoeveel noordelijke witte neudhoorns leven er nog in het wild?",
+                answers: ["0", "2", "50", "1000"],
+                correct: 0,
+                explanation: "Wist je dat? Er zijn momenteel ongeveer 16.000 witte neushoorns in het wild, maar de noordelijke witte neushoorn is bijna uitgestorven – er zijn nog maar twee over, en beide zijn vrouwtjes!"
+            },
+            { 
+                question: "Wat is een wildlife-corridor?",
+                answers: ["Een plek waar stropers dieren vangen", "Een natuurgebied waar dieren vrij kunnen rond lopen", "Een speciaal pad dat natuurgebieden verbindt zodat dieren veilig kunnen migreren", "Een reservaat waar dieren in kooien zitten"],
+                correct: 2,
+                explanation: "Wist je dat? Een wildlife-corridor is een speciaal aangelegde route die natuurgebieden met elkaar verbindt, zodat dieren veilig kunnen migreren en voedsel kunnen vinden. In China is een panda-corridor aangelegd om geïsoleerde panda-populaties met elkaar te verbinden en hun overleving te vergroten!"
+            },
+            { 
+                question: "Wat is de grootste oorzaak van uitsterven bij diersoorten?",
+                answers: ["Habitatverlies", "Jacht en stroperij", "Roofdieren", "Klimaatverandering"],
+                correct: 0,
+                explanation: "Wist je dat? Ongeveer 80% van alle bedreigde diersoorten wordt direct bedreigd door verlies van hun leefgebied. Wanneer bossen en natuurgebieden verdwijnen, verliezen dieren niet alleen hun thuis, maar ook hun voedselbronnen en voortplantingsmogelijkheden. Dit maakt overleven bijna onmogelijk!"
+            },
+            { 
+                question: "Welke van deze dieren is met uitsterven bedreigd?",
+                answers: ["Wilde zwijnen", "Javaanse neushoorn", "Sumatraanse tijger", "Grijze wolf"],
+                correct: 3,
+                explanation: "Wist je dat? Grijze wolven kunnen tot 50 kilometer per dag afleggen op zoek naar voedsel! Ze leven in roedels en communiceren met elkaar via gehuil, dat over kilometers te horen kan zijn. Hun gehuil helpt bij het vinden van roedelleden en het markeren van territorium."
+            },
+            { 
+                question: "Welke van deze dieren wordt bedreigd door klimaatverandering?",
+                answers: ["Javaanse neushoorn", "Panda's", "Koraalriffen en hun bewoners", "Struisvogels"],
+                correct: 2,
+                explanation: "Wist je dat? Koraalriffen zijn extreem gevoelig voor opwarming van de oceanen. Wanneer het water te warm wordt, verliezen koralen hun felle kleuren in een proces dat koraalverbleking wordt genoemd. Door de stress die ze ervaren, stoten de koralen hun symbiotische algen uit, die normaal gesproken zorgen voor voedsel en kleur. Dit maakt de koralen zwak en vatbaar voor ziektes. Wat betekent dit voor de bewoners? Koraalriffen bieden onderdak aan 25% van de mariene biodiversiteit, zoals vissen, zeeschildpadden en zeepaardjes. Wanneer de riffen sterven, verliezen deze dieren hun leefgebied, wat leidt tot verlies van voedselbronnen en bescherming."
+            },
+            { 
+                question: "Wat is verwildering?",
+                answers: ["Het terugbrengen van dieren en planten in hun oorsprokelijke leefomgeving", "Dieren trainen om te overleven in het wild", "Het bouwen van dierentuinen", "Een nieuw natuurreservaat maken"],
+                correct: 0,
+                explanation: "Wist je dat? Rewildering is het proces waarbij natuurgebieden opnieuw worden hersteld en verloren diersoorten weer in hun natuurlijke habitat worden geïntroduceerd. Bijvoorbeeld, in Schotland worden oude wilde paarden opnieuw vrijgelaten om het ecosysteem te herstellen, doordat ze de vegetatie in balans houden en andere dieren helpen."
+            },
+        ];
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // Functie om de quiz random te starten
+        function shuffleQuiz() {
+            for (let i = quiz.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [quiz[i], quiz[j]] = [quiz[j], quiz[i]]; // Swap de elementen
+            }
+        }
+
+        // Functie om de volgende vraag te tonen
+        function nextQuestion() {
+            if (currentQuestionIndex === 0) {
+                shuffleQuiz(); // Shuffle de vragenlijst elke keer bij het starten
+            }
+
+            if (currentQuestionIndex < quiz.length) {
+                document.getElementById("answers").classList.remove("hidden");
+                document.getElementById("feedback").classList.add("hidden");
+
+                const q = quiz[currentQuestionIndex];
+                document.getElementById("question").innerText = q.question;
+
+                const buttons = document.getElementById("answers").getElementsByTagName("button");
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].innerText = q.answers[i];
+                    buttons[i].classList.remove("correct", "wrong");
+                    buttons[i].disabled = false;
+                }
+
+                document.getElementById("next-btn").classList.add("hidden");
+                document.getElementById("start-btn").classList.add("hidden");
+            } else {
+                document.getElementById("question").innerText = "Quiz voorbij! Je score: " + score + " / " + quiz.length;
+                document.getElementById("answers").classList.add("hidden");
+                document.getElementById("feedback").classList.add("hidden");
+                document.getElementById("start-btn").innerText = "Opnieuw spelen";
+                document.getElementById("start-btn").classList.remove("hidden");
+                currentQuestionIndex = 0;
+                score = 0;
+            }
+        }
+
+        function checkAnswer(answerIndex) {
+            const q = quiz[currentQuestionIndex];
+            const buttons = document.getElementById("answers").getElementsByTagName("button");
+
+            if (answerIndex === q.correct) {
+                buttons[answerIndex].classList.add("correct");
+                score++;
+                document.getElementById("feedback").innerText = "✅ Juist! " + q.explanation;
+            } else {
+                buttons[answerIndex].classList.add("wrong");
+                buttons[q.correct].classList.add("correct");
+                document.getElementById("feedback").innerText = "❌ Fout! " + q.explanation;
+            }
+
+            document.getElementById("feedback").classList.remove("hidden");
+            document.getElementById("next-btn").classList.remove("hidden");
+
+            // Disable knoppen na het kiezen van een antwoord
+            for (let button of buttons) {
+                button.disabled = true;
+            }
+
+            currentQuestionIndex++;
+        }
+    </script>
+
 </body>
-
 </html>
