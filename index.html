@@ -44,20 +44,23 @@
     </style>
 </head>
 <body> 
-    <img id="pixelart" src="images/AnimatiePanda.gif" style="display:none; position:absolute; left:50%; transform:translateX(-50%); top:10vh; z-index:10;" alt="Pixelart animatie">
-    <div class="card">
-        <p id="question">Klik op "Start Quiz" om te beginnen!</p>
-        <div id="answers" class="hidden">
-            <button onclick="checkAnswer(0)"></button>
-            <button onclick="checkAnswer(1)"></button>
-            <button onclick="checkAnswer(2)"></button>
-            <button onclick="checkAnswer(3)"></button>
+        <div class="card" style="position:relative;">
+            <img id="pixelart"
+                src="images/AnimatiePanda.gif"
+                style="display:none; position:absolute; left:50%; transform:translateX(-50%); bottom:100%; margin-bottom:0; z-index:10; height:auto;"
+                alt="Pixelart animatie">
+            <p id="question">Klik op "Start Quiz" om te beginnen!</p>
+            <div id="answers" class="hidden">
+                <button onclick="checkAnswer(0)"></button>
+                <button onclick="checkAnswer(1)"></button>
+                <button onclick="checkAnswer(2)"></button>
+                <button onclick="checkAnswer(3)"></button>
+            </div>
+            <p id="feedback" class="hidden"></p>
         </div>
-        <p id="feedback" class="hidden"></p>
-    </div>
-    <button id="next-btn" class="hidden" onclick="nextQuestion()">Volgende Vraag</button>
-    <button id="start-btn" onclick="nextQuestion()">Start Quiz</button>
-    <script src="quizvragen.js"></script>
+        <button id="next-btn" class="hidden" onclick="nextQuestion()">Volgende Vraag</button>
+        <button id="start-btn" onclick="nextQuestion()">Start Quiz</button>
+        <script src="quizvragen.js"></script>
 
     <script>
         let currentQuestionIndex = 0;
@@ -73,6 +76,12 @@
 
         // Zorgt dat de eerste vraag wordt getoond en de quiz begint
         function nextQuestion() {
+            
+            // Toon pixelart af en toe (bijvoorbeeld elke 5e vraag)
+            if (currentQuestionIndex > 0 && currentQuestionIndex % 5 === 0) {
+            showPixelart();
+            }
+
             if (currentQuestionIndex === 0) {
                 shuffleQuiz(); // Schudt de vragen voor de quiz start
             }
@@ -127,11 +136,6 @@
             }
 
             currentQuestionIndex++;
-
-        // Toon pixelart af en toe (bijvoorbeeld elke 5e vraag)
-            if (currentQuestionIndex > 0 && currentQuestionIndex % 5 === 0) {
-            showPixelart();
-            }
         }
 
         function showPixelart() {
