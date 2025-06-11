@@ -44,7 +44,7 @@
     </style>
 </head>
 <body> 
-    <img id="pixelart" src="images/animatie.gif" style="display:none; position:absolute; left:50%; transform:translateX(-50%); top:10vh; z-index:10;" alt="Pixelart animatie">
+    <img id="pixelart" src="images/AnimatiePanda.gif" style="display:none; position:absolute; left:50%; transform:translateX(-50%); top:10vh; z-index:10;" alt="Pixelart animatie">
     <div class="card">
         <p id="question">Klik op "Start Quiz" om te beginnen!</p>
         <div id="answers" class="hidden">
@@ -127,17 +127,19 @@
             }
 
             currentQuestionIndex++;
+
+        // Toon pixelart af en toe (bijvoorbeeld elke 5e vraag)
+            if (currentQuestionIndex > 0 && currentQuestionIndex % 5 === 0) {
+            showPixelart();
+            }
         }
+
         function showPixelart() {
         const pixelart = document.getElementById("pixelart");
         pixelart.style.display = "block";
         setTimeout(() => {
             pixelart.style.display = "none";
-        }, 2000); // 2 seconden zichtbaar
-        }
-        // Toon pixelart af en toe (bijvoorbeeld elke 5e vraag)
-        if (currentQuestionIndex > 0 && currentQuestionIndex % 5 === 0) {
-        showPixelart();
+        }, 5000); // 5 seconden zichtbaar
         }
     </script>
 
