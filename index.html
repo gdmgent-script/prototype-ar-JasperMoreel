@@ -45,10 +45,16 @@
 </head>
 <body> 
         <div class="card" style="position:relative;">
-            <img id="pixelart"
+            <img id="pixelartPanda"
                 src="images/AnimatiePanda.gif"
                 style="display:none; position:absolute; left:50%; transform:translateX(-50%); bottom:100%; margin-bottom:0; z-index:10; width:50%; height:auto;"
                 alt="Pixelart animatie">
+
+            <img id="pixelartPapegaai"
+                src="images/AnimatiePapegaai.gif"
+                style="display:none; position:absolute; left:50%; transform:translateX(-50%); bottom:100%; margin-bottom:0; z-index:10; width:50%; height:auto;"
+                alt="Pixelart animatie">
+
             <p id="question">Klik op "Start Quiz" om te beginnen!</p>
             <div id="answers" class="hidden">
                 <button onclick="checkAnswer(0)"></button>
@@ -77,29 +83,34 @@
         // Zorgt dat de eerste vraag wordt getoond en de quiz begint
         function nextQuestion() {
             
-            // Toon pixelart af en toe (bijvoorbeeld elke 5e vraag)
+            // Panda bij elke 5e vraag (5, 10, 15, ...)
             if (currentQuestionIndex > 0 && currentQuestionIndex % 5 === 0) {
-            showPixelart();
+                showPixelartPanda();
+            }
+
+            // Papegaai bij 2, 7, 12, 17, ...
+            if ((currentQuestionIndex - 2) >= 0 && (currentQuestionIndex - 2) % 5 === 0) {
+                showPixelartPapegaai();
             }
 
             if (currentQuestionIndex === 0) {
-                shuffleQuiz(); // Schudt de vragen voor de quiz start
+                shuffleQuiz();
             }
-
+        
             if (currentQuestionIndex < quiz.length) {
                 document.getElementById("answers").classList.remove("hidden");
                 document.getElementById("feedback").classList.add("hidden");
-
+            
                 const q = quiz[currentQuestionIndex];
                 document.getElementById("question").innerText = q.question;
-
+            
                 const buttons = document.getElementById("answers").getElementsByTagName("button");
                 for (let i = 0; i < buttons.length; i++) {
                     buttons[i].innerText = q.answers[i];
                     buttons[i].classList.remove("correct", "wrong");
                     buttons[i].disabled = false;
                 }
-
+            
                 document.getElementById("next-btn").classList.add("hidden");
                 document.getElementById("start-btn").classList.add("hidden");
             } else {
@@ -138,9 +149,22 @@
             currentQuestionIndex++;
         }
 
-        function showPixelart() {
-            const pixelart = document.getElementById("pixelart");
-            // Reset de animatie door src te verwijderen en opnieuw toe te wijzen
+        // Panda
+        function showPixelartPanda() {
+            const pixelart = document.getElementById("pixelartPanda");
+            pixelart.style.display = "none";
+            const src = pixelart.src;
+            pixelart.src = "";
+            pixelart.src = src;
+            pixelart.style.display = "block";
+            setTimeout(() => {
+                pixelart.style.display = "none";
+            }, 3500); // 3,5 seconden zichtbaar
+        }
+
+        // Papegaai
+        function showPixelartPapegaai() {
+            const pixelart = document.getElementById("pixelartPapegaai");
             pixelart.style.display = "none";
             const src = pixelart.src;
             pixelart.src = "";
@@ -151,6 +175,5 @@
             }, 3500); // 3,5 seconden zichtbaar
         }
     </script>
-
 </body>
 </html>
