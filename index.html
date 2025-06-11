@@ -47,7 +47,7 @@
         <div class="card" style="position:relative;">
             <img id="pixelart"
                 src="images/AnimatiePanda.gif"
-                style="display:none; position:absolute; left:50%; transform:translateX(-50%); bottom:100%; margin-bottom:0; z-index:10; height:auto;"
+                style="display:none; position:absolute; left:50%; transform:translateX(-50%); bottom:100%; margin-bottom:0; z-index:10; width:50%; height:auto;"
                 alt="Pixelart animatie">
             <p id="question">Klik op "Start Quiz" om te beginnen!</p>
             <div id="answers" class="hidden">
@@ -139,11 +139,16 @@
         }
 
         function showPixelart() {
-        const pixelart = document.getElementById("pixelart");
-        pixelart.style.display = "block";
-        setTimeout(() => {
+            const pixelart = document.getElementById("pixelart");
+            // Reset de animatie door src te verwijderen en opnieuw toe te wijzen
             pixelart.style.display = "none";
-        }, 5000); // 5 seconden zichtbaar
+            const src = pixelart.src;
+            pixelart.src = "";
+            pixelart.src = src;
+            pixelart.style.display = "block";
+            setTimeout(() => {
+                pixelart.style.display = "none";
+            }, 4000); // 5 seconden zichtbaar
         }
     </script>
 
